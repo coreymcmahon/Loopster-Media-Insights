@@ -18,6 +18,6 @@ class defaultActions extends sfActions
   public function executeIndex(sfWebRequest $request)
   {
       //$this->form = new GraphForm($defaults, $options, $CSRFSecret);
-      $this->form = new GraphForm( array("graph" => "line", "fans" => "total") ); 
+      $this->form = new GraphForm( array("graph_type" => "line", "fans" => "total","view_by" => "industry") );
   }
 }

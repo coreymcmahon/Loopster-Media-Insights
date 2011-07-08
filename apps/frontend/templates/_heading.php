@@ -6,7 +6,7 @@
     <div id="navbar">
 
     </div>
-    <div>
+    <div id="controlbar">
         <?php if ($sf_user->isAuthenticated()): ?>
             <?php echo $sf_user->getGuardUser()->getEmailAddress() ?>
              |

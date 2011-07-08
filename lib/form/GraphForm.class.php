@@ -18,11 +18,12 @@ class GraphForm extends sfForm {
             array (
             "start_date" => new sfWidgetFormInput(),
             "end_date" => new sfWidgetFormInput (),
+            "view_by" => new sfWidgetFormSelectRadio(array("choices" => array("industry" => "Industry" , "pages" => "Individual Pages")), array()),
             "brands" => new sfWidgetFormDoctrineChoice( array("model"=>"FacebookPage","method"=>"getPageName","multiple"=>true)),
             "industry" => new sfWidgetFormDoctrineChoice( array("model"=>"Industry","method"=>"getName","multiple"=>false) ),
             "show" => new sfWidgetFormChoice(array("choices" => array("5" => "Top 5", "10" => "Top 10","15" => "Top 15") ) , array()),
-            "graph" => new sfWidgetFormSelectRadio(array("choices" => array("line" => "Line" , "bar" => "Bar")), array()),
-            "fans" => new sfWidgetFormSelectRadio(array("choices" => array("total" => "Total Fans" , "growth" => "Fan Growth")), array())
+            "graph_type" => new sfWidgetFormSelectRadio(array("choices" => array("line" => "Line" , "bar" => "Bar")), array()),
+            "fans" => new sfWidgetFormSelectRadio(array("choices" => array("total" => "Total Fans" , "growth" => "Fan Growth")), array("title" => "Display which measurement on the graph" ))
             )
         );
 

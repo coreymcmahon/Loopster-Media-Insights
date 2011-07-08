@@ -1,3 +1,14 @@
 body { padding: 0; margin: 0; border: 0; }
 #heading { width: 100%; background-image: url('../images/heading-bg.png'); }
 #navbar { height: 39px; background-image: url('../images/banner.png'); }
+#content { width: 960px; margin-left:auto; margin-right: auto; }
+#controlbar { width: 940px; text-align:right; margin-left:auto; margin-right: auto; padding-right: 20px; }
+
+#form-main { position: relative; }
+#form-main ul { margin-left: 0; -webkit-padding-start: 0; }
+#form-main ul, #form-main ul li { list-style: none !important; }
+#form-main .radio.view_by li { display: inline; }
+#form-main .form-left, #form-main .form-right { width: 200px; min-height: 200px; }
+#form-main .form-right { position: absolute; top: 0; margin-left: 200px; margin-top: 40px; }
+
+.selected { background-color: red; }
