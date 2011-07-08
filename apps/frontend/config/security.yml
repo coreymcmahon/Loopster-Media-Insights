@@ -1,0 +1,14 @@
+# You can find more information about this file on the symfony website:
+# http://www.symfony-project.org/reference/1_4/en/08-Security
+
+default:
+  is_secure: true
+
+sfGuardUser:
+  is_secure: false
+
+sfGuardRegister:
+  is_secure: false
+
+sfGuardForgotPassword:
+  is_secure: false

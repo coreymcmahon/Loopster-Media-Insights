@@ -1,0 +1,48 @@
+FacebookPage:
+  actAs: { Timestampable: ~ }
+  columns:
+    url: { type: string(511), notnull: true }
+    notes: { type: string(4000) }
+    industry_id: { type: integer , notnull: false }
+  relations:
+    Industry:
+      onDelete: NO ACTION
+      local: industry_id
+      foreign: id
+      type: many
+
+FanCount:
+  actAs: { Timestampable: ~ }
+  columns:
+    facebook_page_id: { type: integer, notnull: true }
+    fancount: { type: integer, notnull: true }
+    date: { type: datetime, notnull: true }
+  relations:
+    FacebookPage:
+      onDelete: CASCADE
+      local: facebook_page_id
+      foreign: id
+      foreignAlias: FanCounts
+
+Message:
+  actAs: { Timestampable: ~ }
+  columns:
+    fan_count_id: { type: integer, notnull: false }
+    facebook_page_id: { type: integer, notnull: false }
+    message: { type: string(1023) }
+  relations:
+    FacebookPage:
+      onDelete: NO ACTION
+      local: facebook_page_id
+      foreign: id
+      foreignAlias: FacebookPages
+    FanCount:
+      onDelete: NO ACTION
+      local: fan_count_id
+      foreign: id
+      foreignAlias: FanCounts
+
+Industry:
+  actAs: { Timestampable: ~ }
+  columns:
+    name: { type: string(127), notnull: true }
