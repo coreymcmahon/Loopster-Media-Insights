@@ -1,7 +1,8 @@
-CREATE TABLE facebook_page (id BIGINT AUTO_INCREMENT, url TEXT NOT NULL, notes TEXT, industry_id BIGINT, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, PRIMARY KEY(id)) ENGINE = INNODB;
+CREATE TABLE facebook_page (id BIGINT AUTO_INCREMENT, url TEXT NOT NULL, notes TEXT, industry_id BIGINT, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, INDEX industry_id_idx (industry_id), PRIMARY KEY(id)) ENGINE = INNODB;
 CREATE TABLE fan_count (id BIGINT AUTO_INCREMENT, facebook_page_id BIGINT NOT NULL, fancount BIGINT NOT NULL, date datetime NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, INDEX facebook_page_id_idx (facebook_page_id), PRIMARY KEY(id)) ENGINE = INNODB;
 CREATE TABLE industry (id BIGINT AUTO_INCREMENT, name VARCHAR(127) NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, PRIMARY KEY(id)) ENGINE = INNODB;
 CREATE TABLE message (id BIGINT AUTO_INCREMENT, fan_count_id BIGINT, facebook_page_id BIGINT, message TEXT, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, INDEX facebook_page_id_idx (facebook_page_id), INDEX fan_count_id_idx (fan_count_id), PRIMARY KEY(id)) ENGINE = INNODB;
+CREATE TABLE tokens (id BIGINT AUTO_INCREMENT, token VARCHAR(127) NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, PRIMARY KEY(id)) ENGINE = INNODB;
 CREATE TABLE sf_guard_forgot_password (id BIGINT AUTO_INCREMENT, user_id BIGINT NOT NULL, unique_key VARCHAR(255), expires_at DATETIME NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, INDEX user_id_idx (user_id), PRIMARY KEY(id)) ENGINE = INNODB;
 CREATE TABLE sf_guard_group (id BIGINT AUTO_INCREMENT, name VARCHAR(255) UNIQUE, description TEXT, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, PRIMARY KEY(id)) ENGINE = INNODB;
 CREATE TABLE sf_guard_group_permission (group_id BIGINT, permission_id BIGINT, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, PRIMARY KEY(group_id, permission_id)) ENGINE = INNODB;
@@ -10,7 +11,8 @@ CREATE TABLE sf_guard_remember_key (id BIGINT AUTO_INCREMENT, user_id BIGINT, re
 CREATE TABLE sf_guard_user (id BIGINT AUTO_INCREMENT, first_name VARCHAR(255), last_name VARCHAR(255), email_address VARCHAR(255) NOT NULL UNIQUE, username VARCHAR(128) NOT NULL UNIQUE, algorithm VARCHAR(128) DEFAULT 'sha1' NOT NULL, salt VARCHAR(128), password VARCHAR(128), is_active TINYINT(1) DEFAULT '1', is_super_admin TINYINT(1) DEFAULT '0', last_login DATETIME, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, INDEX is_active_idx_idx (is_active), PRIMARY KEY(id)) ENGINE = INNODB;
 CREATE TABLE sf_guard_user_group (user_id BIGINT, group_id BIGINT, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, PRIMARY KEY(user_id, group_id)) ENGINE = INNODB;
 CREATE TABLE sf_guard_user_permission (user_id BIGINT, permission_id BIGINT, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, PRIMARY KEY(user_id, permission_id)) ENGINE = INNODB;
-ALTER TABLE fan_count ADD CONSTRAINT fan_count_facebook_page_id_facebook_page_id FOREIGN KEY (facebook_page_id) REFERENCES facebook_page(id) ON DELETE CASCADE;
+ALTER TABLE facebook_page ADD CONSTRAINT facebook_page_industry_id_industry_id FOREIGN KEY (industry_id) REFERENCES industry(id) ON DELETE NO ACTION;
+ALTER TABLE fan_count ADD CONSTRAINT fan_count_facebook_page_id_facebook_page_id FOREIGN KEY (facebook_page_id) REFERENCES facebook_page(id) ON DELETE NO ACTION;
 ALTER TABLE message ADD CONSTRAINT message_fan_count_id_fan_count_id FOREIGN KEY (fan_count_id) REFERENCES fan_count(id) ON DELETE NO ACTION;
 ALTER TABLE message ADD CONSTRAINT message_facebook_page_id_facebook_page_id FOREIGN KEY (facebook_page_id) REFERENCES facebook_page(id) ON DELETE NO ACTION;
 ALTER TABLE sf_guard_forgot_password ADD CONSTRAINT sf_guard_forgot_password_user_id_sf_guard_user_id FOREIGN KEY (user_id) REFERENCES sf_guard_user(id) ON DELETE CASCADE;

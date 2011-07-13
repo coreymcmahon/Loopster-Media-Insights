@@ -16,4 +16,70 @@ class FanCountTable extends Doctrine_Table
     {
         return Doctrine_Core::getTable('FanCount');
     }
+
+    /**
+     * Looks through the fancounts table to find Facebook Pages that haven't been updated today. A list of these is then returned.
+     *
+     * @return object
+     */
+    public static function getDirtyPages($limit=0)
+    {
+        $start = date("Y-m-d") . " 00:00:00";
+        $end   = date("Y-m-d") . " 23:59:99";
+
+        // Find all Pages that have a fancount value for today
+        $fancountsToday = FanCountTable::getInstance()->createQuery()
+                ->select("*")
+                ->where("date > '$start'")
+                ->andWhere("date < '$end'")
+                ->execute();
+
+        // Create an array of IDs that we DO NOT need to run a fancount update for
+        $ids = array();
+        foreach ($fancountsToday as $fancount)
+            $ids["" . $fancount->getFacebookPageId()] = true;
+        
+
+        // Get the collection of ALL pages, then go through and siphon the values NOT in the ID array into a new Collection
+        $allPages = FacebookPageTable::getInstance()->findAll();
+        $ret = Doctrine_Collection::create("FacebookPage");
+        foreach ($allPages as $page) {
+            if (!isset($ids["" .$page->getId()]))
+                $ret->add($page);
+        }
+
+        // Return the collection
+        return $ret;
+
+    }
+
+    /**
+     * Returns the earliest datetime value in the 'date' field
+     *
+     * @return string The minimum 'date' value in the table as a string in the format 'd-m-Y'
+     */
+    public function getMinDate() {
+        // Get the earliest date that we have data for
+        $connection = Doctrine_Manager::connection();
+        $query = "SELECT MIN(date) AS min FROM fan_count";
+        $statement = $connection->execute($query);
+        $statement->execute();
+        $resultset = $statement->fetch(PDO::FETCH_OBJ);
+        return substr($resultset->min,0,10);
+    }
+
+    /**
+     * Returns the latest datetime value in the 'date' field
+     *
+     * @return string The maximum 'date' value in the table as a string in the format 'd-m-Y'
+     */
+    public function getMaxDate() {
+        // Get the latest date that we have data for
+        $connection = Doctrine_Manager::connection();
+        $query = "SELECT MAX(date) AS max FROM fan_count";
+        $statement = $connection->execute($query);
+        $statement->execute();
+        $resultset = $statement->fetch(PDO::FETCH_OBJ);
+        return substr($resultset->max,0,10);
+    }
 }

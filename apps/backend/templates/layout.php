@@ -15,7 +15,9 @@
         <?php echo link_to("Industries","industry/index"); ?> |
         <?php echo link_to("Messages","message/index"); ?> |
         <?php echo link_to("Users","guard/users"); ?> |
-        <?php echo link_to("Permissions","guard/permissions"); ?>
+        <?php echo link_to("Permissions","guard/permissions"); ?> |
+        <?php echo link_to("Renew Token","oauth/index"); ?> |
+        <?php  echo link_to("Force update","populate/index"); ?>
     <?php endif; ?>
     <div id="content">
         <?php echo $sf_content ?>

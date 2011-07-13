@@ -12,6 +12,19 @@
  */
 class FacebookPage extends BaseFacebookPage
 {
-    public function test () {
+    /**
+     *
+     * @return String Returns the username of the Facebook page. eg: http://www.facebook.com/<username> 
+     */
+    public function getName() {
+        $url = $this->getUrl();
+        // break up the URL and get the parts we want from it
+        $endIndex = strpos($url,"?"); // remove QS params
+        if ($endIndex > 0)
+            $url = substr ($url, 0, $endIndex);
+        // drop anything after the last '/'
+        $endIndex = strrpos($url, "/");
+        $url = substr($url, $endIndex + 1, strlen($url) - $endIndex - 1);
+        return $url;
     }
 }

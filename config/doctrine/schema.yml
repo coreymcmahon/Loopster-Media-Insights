@@ -9,7 +9,6 @@ FacebookPage:
       onDelete: NO ACTION
       local: industry_id
       foreign: id
-      type: many
 
 FanCount:
   actAs: { Timestampable: ~ }
@@ -19,10 +18,9 @@ FanCount:
     date: { type: datetime, notnull: true }
   relations:
     FacebookPage:
-      onDelete: CASCADE
+      onDelete: NO ACTION
       local: facebook_page_id
       foreign: id
-      foreignAlias: FanCounts
 
 Message:
   actAs: { Timestampable: ~ }
@@ -46,3 +44,8 @@ Industry:
   actAs: { Timestampable: ~ }
   columns:
     name: { type: string(127), notnull: true }
+
+Tokens:
+  actAs: { Timestampable: ~ }
+  columns:
+    token: { type: string(127), notnull: true }

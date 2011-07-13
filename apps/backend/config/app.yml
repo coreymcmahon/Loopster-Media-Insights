@@ -2,4 +2,10 @@
 # http://www.symfony-project.org/reference/1_4/en/11-App
 
 # default values
-#all:
+all:
+  opengraph:
+    endpoint: "https://graph.facebook.com/"
+    oauth_endpoint: "https://graph.facebook.com/oauth/access_token"
+  facebook:
+    app_id: "204266576278373"
+    app_secret: "aff6d96ad2a4be5f07d361deee3902de"

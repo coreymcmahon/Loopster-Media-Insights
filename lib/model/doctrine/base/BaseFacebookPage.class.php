@@ -8,26 +8,26 @@
  * @property string $url
  * @property string $notes
  * @property integer $industry_id
- * @property Doctrine_Collection $Industry
- * @property Doctrine_Collection $FanCounts
+ * @property Industry $Industry
+ * @property Doctrine_Collection $FanCount
  * @property Doctrine_Collection $FacebookPages
  * 
  * @method string              getUrl()           Returns the current record's "url" value
  * @method string              getNotes()         Returns the current record's "notes" value
  * @method integer             getIndustryId()    Returns the current record's "industry_id" value
- * @method Doctrine_Collection getIndustry()      Returns the current record's "Industry" collection
- * @method Doctrine_Collection getFanCounts()     Returns the current record's "FanCounts" collection
+ * @method Industry            getIndustry()      Returns the current record's "Industry" value
+ * @method Doctrine_Collection getFanCount()      Returns the current record's "FanCount" collection
  * @method Doctrine_Collection getFacebookPages() Returns the current record's "FacebookPages" collection
  * @method FacebookPage        setUrl()           Sets the current record's "url" value
  * @method FacebookPage        setNotes()         Sets the current record's "notes" value
  * @method FacebookPage        setIndustryId()    Sets the current record's "industry_id" value
- * @method FacebookPage        setIndustry()      Sets the current record's "Industry" collection
- * @method FacebookPage        setFanCounts()     Sets the current record's "FanCounts" collection
+ * @method FacebookPage        setIndustry()      Sets the current record's "Industry" value
+ * @method FacebookPage        setFanCount()      Sets the current record's "FanCount" collection
  * @method FacebookPage        setFacebookPages() Sets the current record's "FacebookPages" collection
  * 
  * @package    insights
  * @subpackage model
- * @author     Your name here
+ * @author     Loopster Media
  * @version    SVN: $Id: Builder.php 7490 2010-03-29 19:53:27Z jwage $
  */
 abstract class BaseFacebookPage extends sfDoctrineRecord
@@ -53,12 +53,12 @@ abstract class BaseFacebookPage extends sfDoctrineRecord
     public function setUp()
     {
         parent::setUp();
-        $this->hasMany('Industry', array(
+        $this->hasOne('Industry', array(
              'local' => 'industry_id',
              'foreign' => 'id',
              'onDelete' => 'NO ACTION'));
 
-        $this->hasMany('FanCount as FanCounts', array(
+        $this->hasMany('FanCount', array(
              'local' => 'id',
              'foreign' => 'facebook_page_id'));
 
