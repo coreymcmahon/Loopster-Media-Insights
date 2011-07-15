@@ -12,8 +12,7 @@
     <?php include_partial("global/heading") ?>
     <?php if ($sf_user->hasPermission("manage-users")): ?>
         <?php echo link_to("Facebook Pages","facebookpage/index"); ?> |
-        <?php echo link_to("Industries","industry/index"); ?> |
-        <?php echo link_to("Messages","message/index"); ?> |
+        <?php echo link_to("Industries","industry/index"); ?> | 
         <?php echo link_to("Users","guard/users"); ?> |
         <?php echo link_to("Permissions","guard/permissions"); ?> |
         <?php echo link_to("Renew Token","oauth/index"); ?> |
