@@ -3,8 +3,8 @@
         /* TODO: insert start / end date range stuff in here */
         $("#graph_start_date").datepicker({
             dateFormat: 'dd-mm-yy',
-            minDate: new Date(2011, 6 - 1, 1),
-            maxDate: new Date(2011, 7 - 1, 1),
+            minDate: new Date(<?php echo $min_date_array[0]; ?>, <?php echo $min_date_array[1]; ?> - 1, <?php echo $min_date_array[2]; ?>),
+            maxDate: new Date(<?php echo $max_date_array[0]; ?>, <?php echo $max_date_array[1]; ?> - 1, <?php echo $max_date_array[2]; ?>),
             onSelect: function(dateText, inst) {
                /* When a 'start' date is selected, make this the min value for the end-date selector */
                 $("#graph_end_date").datepicker("option","minDate", $("#graph_start_date").datepicker("getDate"));
@@ -19,7 +19,6 @@
         });
     });
 </script>
-
 <form action="<?php echo url_for('default/index') ?>" method="POST">
   
     <div id="form-dates">
@@ -28,6 +27,7 @@
     </div>
   
     <div id="graph">&nbsp;</div>
+    <div id="debug"><?php echo $text; ?></div>
     
     <div id="form-main">
         <div class="form-left">
@@ -48,10 +48,10 @@
             <?php echo $form['fans']->renderRow() ?>
         </div>
     </div>
-    
+    <?php if ($form->isCSRFProtected()) : ?>
+      <?php echo $form['_csrf_token']->render(); ?>
+    <?php endif; ?>
     <input type="submit" id="form_submit" />
-    <?php /* TODO: add the code below to hide the submit button IF we go Ajaxy */ ?>
-    <script>/* $(document).ready( function() { $("#form_submit").css("display","none"); } ); */</script>
 </form>
 
 

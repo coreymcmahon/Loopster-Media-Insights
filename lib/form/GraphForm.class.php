@@ -6,13 +6,9 @@
  * @author corey_mcmahon
  */
 
-class GraphForm extends sfForm {
+class GraphForm extends BaseForm {
 
-    /**
-     * Default set up method for the form
-     */
-    public function setup() {
-
+    public function configure() {
         // Set up the input elements
         $this->setWidgets(
             array (
@@ -32,8 +28,6 @@ class GraphForm extends sfForm {
         // Set the name / id naming convention
         $this->getWidgetSchema()->setNameFormat('graph[%s]');
 
-        // Call the sfForm setup method
-        parent::setup();
     }
 }
 ?>
