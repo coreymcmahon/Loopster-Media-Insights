@@ -17,12 +17,14 @@ class defaultActions extends sfActions
   */
   public function executeIndex(sfWebRequest $request)
   {
+      // Find out the minimum date that we have a recorded Fancount value for
       $this->min_date = FanCountTable::getInstance()->getMinDate();
       $this->min_date_array = explode("-", $this->min_date);
-
+      // ... likewise for 'max'
       $this->max_date = FanCountTable::getInstance()->getMaxDate();
       $this->max_date_array = explode("-", $this->max_date);
 
+      // Set the default values for Graph form
       $this->form = new GraphForm( 
         array(
           "start_date" => $this->min_date,
@@ -33,22 +35,33 @@ class defaultActions extends sfActions
         )
       );
 
+      // If this is a postback, do some stuff...
       if ($request->isMethod("post")) {
+          // Bind parameter values to the form
           $this->form->bind($request->getParameter("graph"));
 
-          $this->form->isValid();
+          $data = null;
 
           /* if ($this->form->isValid()) { // TODO: add validation in here */
-          
+
+          // Move bits and bytes around...
           if ( $this->form["view_by"]->getValue() == "pages" ) {
+            // Show fan stats for specific pages...
             $page_ids = $this->form["brands"]->getValue();
-            foreach ($page_ids as $id) {
-                $this->text .= $id ." ";
-            }
+            $pages = FacebookPageTable::getInstance()->createQuery()
+                    ->select("*")
+                    ->whereIn("id",$page_ids)
+                    ->execute();
           } else {
+            // Show fan stats for the 'top X' in specified industry
             $industry_id = $this->form["industry"]->getValue();
             $show = $this->form["show"]->getValue();
+            $industryPages = FacebookPageTable::getFacebookPagesByIndustry($industry_id);
+            $pages = FacebookPageTable::getTopFacebookPages($industryPages, $show);
           }
+
+          // TODO: generate JavaScript to put the data below into the graph
+          $this->data = FanCountTable::getFancountData($pages, $this->form["start_date"]->getValue() . " 00:00:00", $this->form["end_date"]->getValue() . " 23:59:99");
 
           /* } */
       }

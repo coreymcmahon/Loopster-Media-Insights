@@ -16,4 +16,52 @@ class FacebookPageTable extends Doctrine_Table
     {
         return Doctrine_Core::getTable('FacebookPage');
     }
+
+    /**
+     * Returns all Facebook Pages within a particular industry
+     *
+     * @param int $industry_id
+     * @return DoctrineCollection
+     */
+    public static function getFacebookPagesByIndustry($industry_id)
+    {
+        return FacebookPageTable::getInstance()->createQuery()
+                ->select("*")
+                ->where("industry_id = ?",$industry_id)
+                ->execute();
+    }
+
+    /**
+     * Of the Facebook pages supplied as input parameter $page, this method will return the top $limit in terms of current fan number
+     *
+     * @param DoctrineCollection $pages
+     * @return DoctrineCollection
+     */
+     public static function getTopFacebookPages($pages, $limit=0) {
+
+         // Create an array to house the fanpage IDs and fancounts
+         $fans = array();
+
+         // Go through and create the array, using fancount as key and ID as value
+         foreach($pages as $page)
+             $fans[$page->getFancount()] = $page->getId();
+
+         // Sort on key. Low fancount page IDs will come first, high fancount page IDs last
+         ksort($fans);
+
+         // Go through the array and 'pop' the IDs off the array starting with highest fancount. Stop when we either reach the end of the array or the $limit (if specified)
+         $i = 0;
+         $ret = array();
+         $len = count($fans);
+         while ((($limit == 0) || ($i < $limit)) && $i < $len) {
+            $ret[] = array_pop($fans);
+            $i++;
+         }
+
+         // Construct the query to pull back the Page ORM objects and return them
+         return FacebookPageTable::getInstance()->createQuery()
+                 ->select("*")
+                 ->whereIn("id",$ret)
+                 ->execute();
+     }
 }

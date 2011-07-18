@@ -10,6 +10,7 @@
   </head>
   <body>
     <?php include_partial("global/heading") ?>
+    <div id="adminbar">
     <?php if ($sf_user->hasPermission("manage-users")): ?>
         <?php echo link_to("Facebook Pages","facebookpage/index"); ?> |
         <?php echo link_to("Industries","industry/index"); ?> | 
@@ -18,6 +19,7 @@
         <?php echo link_to("Renew Token","oauth/index"); ?> |
         <?php  echo link_to("Force update","populate/index"); ?>
     <?php endif; ?>
+    </div>
     <div id="content">
         <?php echo $sf_content ?>
     </div>

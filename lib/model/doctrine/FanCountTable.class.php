@@ -88,21 +88,18 @@ class FanCountTable extends Doctrine_Table
      *
      * @return DoctrineCollection
      */
-    public function getData($pages,$start,$end) {
-        
-        // Build up a comma separated list of Facebook Page ids in $pages
-        $inClause = "";
+    public static function getFancountData($pages,$start,$end) {
+        // Build up an array of Facebook Page ids
+        $inClause = array();
         foreach ($pages as $page)
-            $inClause .= $page->getId() . ",";
-        if ($inClause != "")
-            $inClause = substr ($inClause, 0, strlen ($inClause)-1);
+            $inClause[] = $page->getId();
 
         // Execute the query and return the DoctrineCollection
-        return FacebookPageTable::getInstance()->createQuery()
+        return FanCountTable::getInstance()->createQuery()
                 ->select("*")
-                ->where("facebook_page_id IN (?)",$inClause)
-                ->andWhere("? > date",$start)
-                ->andWhere("? < date",$end)
+                ->whereIn("facebook_page_id",$inClause)
+                ->andWhere("date > ?",$start)
+                ->andWhere("date < ?",$end)
                 ->execute();
     }
 }

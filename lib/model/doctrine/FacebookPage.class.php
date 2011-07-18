@@ -27,4 +27,18 @@ class FacebookPage extends BaseFacebookPage
         $url = substr($url, $endIndex + 1, strlen($url) - $endIndex - 1);
         return $url;
     }
+
+    /**
+     * Return the latest fancount value for this Facebook Page
+     *
+     * @return object
+     */
+    public function getFancount() {
+        $q = FanCountTable::getInstance()->createQuery()
+                ->select("MAX(date), fancount as fancount")
+                ->where("facebook_page_id = ?",$this->getId())
+                ->execute();
+        return $q[0]->getFancount();
+    }
+
 }

@@ -2,7 +2,7 @@
     $(document).ready(function () {
         /* TODO: insert start / end date range stuff in here */
         $("#graph_start_date").datepicker({
-            dateFormat: 'dd-mm-yy',
+            dateFormat: 'yy-mm-dd',
             minDate: new Date(<?php echo $min_date_array[0]; ?>, <?php echo $min_date_array[1]; ?> - 1, <?php echo $min_date_array[2]; ?>),
             maxDate: new Date(<?php echo $max_date_array[0]; ?>, <?php echo $max_date_array[1]; ?> - 1, <?php echo $max_date_array[2]; ?>),
             onSelect: function(dateText, inst) {
@@ -11,7 +11,7 @@
             }
         });
         $("#graph_end_date").datepicker({
-            dateFormat: 'dd-mm-yy',
+            dateFormat: 'yy-mm-dd',
             onSelect: function(dateText, inst) {
                /* When a 'end' date is selected, make this the max value for the start-date selector */
                 $("#graph_start_date").datepicker("option","maxDate", $("#graph_end_date").datepicker("getDate"));
@@ -27,7 +27,13 @@
     </div>
   
     <div id="graph">&nbsp;</div>
-    <div id="debug"><?php echo $text; ?></div>
+    <div id="debug">
+        <?php if (isset($data)): ?>
+            <?php foreach($data as $point): ?>
+                <?php echo "(" . $point->getFacebookPage()->getName() . "," . $point->getFancount() .") "; ?>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </div>
     
     <div id="form-main">
         <div class="form-left">
