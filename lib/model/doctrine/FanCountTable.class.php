@@ -82,4 +82,27 @@ class FanCountTable extends Doctrine_Table
         $resultset = $statement->fetch(PDO::FETCH_OBJ);
         return substr($resultset->max,0,10);
     }
+
+    /**
+     * Returns the fancount entries for the specified pages within the supplied 'start' and 'end' dates
+     *
+     * @return DoctrineCollection
+     */
+    public function getData($pages,$start,$end) {
+        
+        // Build up a comma separated list of Facebook Page ids in $pages
+        $inClause = "";
+        foreach ($pages as $page)
+            $inClause .= $page->getId() . ",";
+        if ($inClause != "")
+            $inClause = substr ($inClause, 0, strlen ($inClause)-1);
+
+        // Execute the query and return the DoctrineCollection
+        return FacebookPageTable::getInstance()->createQuery()
+                ->select("*")
+                ->where("facebook_page_id IN (?)",$inClause)
+                ->andWhere("? > date",$start)
+                ->andWhere("? < date",$end)
+                ->execute();
+    }
 }
