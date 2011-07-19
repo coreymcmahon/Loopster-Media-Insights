@@ -26,14 +26,23 @@
         <?php echo $form['end_date']->renderRow() ?>
     </div>
   
-    <div id="graph">&nbsp;</div>
-    <div id="debug">
-        <?php if (isset($data)): ?>
-            <?php foreach($data as $point): ?>
-                <?php echo "(" . $point->getFacebookPage()->getName() . "," . $point->getFancount() .") "; ?>
+    <div id="graph" style="width: 875px; height: 500px; margin-left: auto; margin-right: auto;">&nbsp;</div>
+    <script type="text/javascript">
+    var data = [
+    <?php foreach($fancount as $value): ?>
+        {
+            label: "<?php echo $value["name"]; ?>",
+            data: [
+            <?php foreach ($value["data"] as $point): ?>
+                [ <?php echo strtotime($point["date"] . " UTC") * 1000; ?> , <?php echo $point["fancount"]; ?> ],
             <?php endforeach; ?>
-        <?php endif; ?>
-    </div>
+            ],
+            hoverable: true,
+            clickable: true
+        },
+    <?php endforeach; ?>
+    ];
+    </script>
     
     <div id="form-main">
         <div class="form-left">
@@ -94,4 +103,75 @@
             viewByStatusChanged();
         }
     );
+    </script>
+
+    <script>
+        $(function() {
+        $.plot($("#graph"),
+            data,
+
+            {
+                series: {
+                    lines: { show: true },
+                    points: { show: true }
+                },
+                xaxis: {
+                    mode: "time",
+                    timeformat: "%y/%m/%d"
+                },
+                yaxis: {
+
+                },
+                grid: {
+                    hoverable: true, clickable: true
+                }
+            }
+        );
+
+        /* Get on mouse over tooltips working... */
+        function formatDate(_date) {
+            var date = new Date(parseInt(_date));
+            return ((date.getFullYear()) + "-" +
+                ((date.getMonth()+1) < 10 ? "0" + (date.getMonth()+1) : + (date.getMonth()+1) ) + "-" +
+                (date.getDate() < 10 ? "0" + date.getDate() : + date.getDate()));
+        }
+
+        function showTooltip(x, y, contents) {
+            $('<div id="tooltip">' + contents + '</div>').css( {
+                position: 'absolute',
+                display: 'none',
+                top: y + 5,
+                left: x + 5,
+                border: '1px solid #fdd',
+                padding: '2px',
+                'background-color': '#fee',
+                opacity: 0.80
+            }).appendTo("body").fadeIn(200);
+        }
+
+        var previousPoint = null;
+        $("#graph").bind("plothover", function (event, pos, item) {
+            //$("#x").text(pos.x.toFixed(2));
+            //$("#y").text(pos.y.toFixed(2));
+
+            /*if ($("#enableTooltip:checked").length > 0) {*/
+                if (item) {
+                    if (previousPoint != item.dataIndex) {
+                        previousPoint = item.dataIndex;
+
+                        $("#tooltip").remove();
+                        var x = item.datapoint[0].toFixed(2),
+                            y = item.datapoint[1].toFixed(2);
+
+                        showTooltip(item.pageX, item.pageY,
+                                    item.series.label + " had " + parseInt(y) + " fans on " + formatDate(x));
+                    }
+                }
+                else {
+                    $("#tooltip").remove();
+                    previousPoint = null;
+                }
+            //}
+        });
+    });
     </script>

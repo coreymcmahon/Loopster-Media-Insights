@@ -61,7 +61,23 @@ class defaultActions extends sfActions
           }
 
           // TODO: generate JavaScript to put the data below into the graph
-          $this->data = FanCountTable::getFancountData($pages, $this->form["start_date"]->getValue() . " 00:00:00", $this->form["end_date"]->getValue() . " 23:59:99");
+          $fandata = FanCountTable::getFancountData($pages, $this->form["start_date"]->getValue() . " 00:00:00", $this->form["end_date"]->getValue() . " 23:59:99");
+          $fancount = array();
+
+          foreach ($fandata as $point) {
+              $page = $point->getFacebookPage();
+              $id = $page->getId();
+              $date = $point->getDate();
+              $count = $point->getFancount();
+              if (!isset($fancount["" . $id])) {
+                  $fancount["" . $id] = array();
+                  $fancount["" . $id]["name"] = $page->getName();
+                  $fancount["" . $id]["data"] = array();
+              }
+              $fancount["" . $id]["data"][] = array("date" => $date , "fancount" => $count);
+          }
+
+          $this->fancount = $fancount;
 
           /* } */
       }
