@@ -112,8 +112,13 @@
 
             {
                 series: {
+                    <?php if (!isset($graph_type) || ($graph_type == "line")): ?>
                     lines: { show: true },
                     points: { show: true }
+                    <?php else: ?>
+                    stack: 0, // TODO: get stacking working
+                    bars: { show: true , fill: true, barWidth: 24 * 60 * 60 * 1000 * 0.5, align: 'left' }
+                    <?php endif; ?>
                 },
                 xaxis: {
                     mode: "time",
