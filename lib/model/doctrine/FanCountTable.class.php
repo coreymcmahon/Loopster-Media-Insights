@@ -28,11 +28,16 @@ class FanCountTable extends Doctrine_Table
         $end   = date("Y-m-d") . " 23:59:99";
 
         // Find all Pages that have a fancount value for today
-        $fancountsToday = FanCountTable::getInstance()->createQuery()
+        $q = FanCountTable::getInstance()->createQuery()
                 ->select("*")
                 ->where("date > '$start'")
-                ->andWhere("date < '$end'")
-                ->execute();
+                ->andWhere("date < '$end'");
+
+        // If we're only fetching a set number of results, add that clause to the query
+        if ($limit != 0)
+            $q->limit ($limit);
+        
+        $fancountsToday = $q->execute();
 
         // Create an array of IDs that we DO NOT need to run a fancount update for
         $ids = array();
