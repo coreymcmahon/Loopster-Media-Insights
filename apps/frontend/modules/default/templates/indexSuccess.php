@@ -1,6 +1,6 @@
 <script type="text/javascript">
     $(document).ready(function () {
-        /* TODO: insert start / end date range stuff in here */
+
         $("#graph_start_date").datepicker({
             dateFormat: 'yy-mm-dd',
             minDate: new Date(<?php echo $min_date_array[0]; ?>, <?php echo $min_date_array[1]; ?> - 1, <?php echo $min_date_array[2]; ?>),
@@ -42,6 +42,25 @@
         },
     <?php endforeach; ?>
     ];
+
+    function convertToGrowth(_data) {
+        for (var i=0 ; i<_data.length ; i++) {
+            var newData = [];
+            for (var x=0 ; x<_data[i]["data"].length ; x++) {
+                if (x > 0) {
+                    newData[x-1] = [ _data[i]["data"][x][0] , _data[i]["data"][x][1] - _data[i]["data"][x-1][1] ];
+                }
+            }
+            _data[i]["data"] = newData;
+        }
+        return _data;
+    }
+    var metric = "total";
+
+    <?php if ($fans == "growth"): ?>
+    data = convertToGrowth(data);
+    metric = "growth";
+    <?php endif; ?>
     </script>
     
     <div id="form-main">
@@ -114,10 +133,10 @@
                 series: {
                     <?php if (!isset($graph_type) || ($graph_type == "line")): ?>
                     lines: { show: true },
-                    points: { show: true }
+                    points: { show: true },
                     <?php else: ?>
-                    stack: 0, // TODO: get stacking working
-                    bars: { show: true , fill: true, barWidth: 24 * 60 * 60 * 1000 * 0.5, align: 'left' }
+                    stack: 0, 
+                    bars: { show: true , fill: true, barWidth: 24 * 60 * 60 * 1000 * 0.5, align: 'left' }, 
                     <?php endif; ?>
                 },
                 xaxis: {
@@ -128,12 +147,12 @@
 
                 },
                 grid: {
-                    hoverable: true, clickable: true
+                    hoverable: true,
+                    clickable: true
                 }
             }
         );
-
-        /* Get on mouse over tooltips working... */
+        
         function formatDate(_date) {
             var date = new Date(parseInt(_date));
             return ((date.getFullYear()) + "-" +
@@ -161,6 +180,7 @@
 
             /*if ($("#enableTooltip:checked").length > 0) {*/
                 if (item) {
+                    var m = (metric == "total");
                     if (previousPoint != item.dataIndex) {
                         previousPoint = item.dataIndex;
 
@@ -169,7 +189,7 @@
                             y = item.datapoint[1].toFixed(2);
 
                         showTooltip(item.pageX, item.pageY,
-                                    item.series.label + " had " + parseInt(y) + " fans on " + formatDate(x));
+                                    item.series.label + " had " + (m ? "" : "fan growth of ") + parseInt(y) + (m ? " fans on " : " on ") + formatDate(x));
                     }
                 }
                 else {

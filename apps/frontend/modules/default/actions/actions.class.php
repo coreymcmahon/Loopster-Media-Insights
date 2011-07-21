@@ -79,6 +79,7 @@ class defaultActions extends sfActions
 
           $this->fancount = $fancount;
           $this->graph_type = $this->form["graph_type"]->getValue();
+          $this->fans = $this->form["fans"]->getValue();
           /* } */
       }
   }
