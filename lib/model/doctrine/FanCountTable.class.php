@@ -56,6 +56,7 @@ class FanCountTable extends Doctrine_Table
                 $ret->add($page);
                 $i++;
             }
+            // Only provide fan pages up to the specified 'limit'
             if ($i >= $limit)
                 break;
         }

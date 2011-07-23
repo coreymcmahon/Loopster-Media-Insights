@@ -1,0 +1,1 @@
+<div class="error"><?php echo $sf_user->getFlash("message"); ?></div>
