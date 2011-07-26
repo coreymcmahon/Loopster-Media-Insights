@@ -113,6 +113,7 @@ class FanCountTable extends Doctrine_Table
                 ->whereIn("facebook_page_id",$inClause)
                 ->andWhere("date > ?",$start)
                 ->andWhere("date < ?",$end)
+                ->orderBy("date ASC")
                 ->execute();
     }
 }

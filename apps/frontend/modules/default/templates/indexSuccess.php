@@ -44,16 +44,17 @@
     ];
 
     function convertToGrowth(_data) {
+        var ret = [];
         for (var i=0 ; i<_data.length ; i++) {
-            var newData = [];
+            ret[i] = { label: _data[i].label, data: [] };
+
             for (var x=0 ; x<_data[i]["data"].length ; x++) {
                 if (x > 0) {
-                    newData[x-1] = [ _data[i]["data"][x][0] , _data[i]["data"][x][1] - _data[i]["data"][x-1][1] ];
+                    ret[i]["data"][x-1] = [ _data[i]["data"][x][0] , _data[i]["data"][x][1] - _data[i]["data"][x-1][1] ];
                 }
             }
-            _data[i]["data"] = newData;
         }
-        return _data;
+        return ret;
     }
     var metric = "total";
 
