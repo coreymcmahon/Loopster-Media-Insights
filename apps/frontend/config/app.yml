@@ -2,4 +2,11 @@
 # http://www.symfony-project.org/reference/1_4/en/11-App
 
 # default values
-#all:
+all:
+  mailchimp:
+    endpoint: "http://loopstermedia.us2.list-manage.com/subscribe/post"
+    u: "f4604f95207c26743a1e43032"
+    id: "cf6253445c"
+    fname_field: "MERGE1"
+    lname_field: "MERGE2"
+    email_field: "MERGE0"
