@@ -92,7 +92,7 @@
     <?php if ($form->isCSRFProtected()) : ?>
       <?php echo $form['_csrf_token']->render(); ?>
     <?php endif; ?>
-    <input type="submit" id="form_submit" />
+    <input type="submit" id="form_submit" value="Update" />
 </form>
 
 
