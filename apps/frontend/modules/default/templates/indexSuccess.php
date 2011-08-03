@@ -32,7 +32,10 @@
         <?php echo $form['end_date']->renderRow() ?>
     </div>
   
-    <div id="graph" style="width: 875px; height: 500px; margin-left: auto; margin-right: auto;">&nbsp;</div>
+    <div id="graph-container">
+        <div id="graph-image"><img src="<?php echo url_for("images/loopster-logo.png"); ?>"/></div>
+        <div id="graph" style="width: 875px; height: 500px; margin-left: auto; margin-right: auto;">&nbsp;</div>
+    </div>
     <script type="text/javascript">
     var data = [
     <?php foreach($fancount as $value): ?>
