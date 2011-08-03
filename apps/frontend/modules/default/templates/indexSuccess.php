@@ -1,17 +1,23 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
+        var minDate = new Date(<?php echo $min_date_array[0]; ?>, <?php echo $min_date_array[1]; ?> - 1, <?php echo $min_date_array[2]; ?>);
+        var maxDate = new Date(<?php echo $max_date_array[0]; ?>, <?php echo $max_date_array[1]; ?> - 1, <?php echo $max_date_array[2]; ?>);
+        var dateFormat = 'yy-mm-dd';
+
         $("#graph_start_date").datepicker({
-            dateFormat: 'yy-mm-dd',
-            minDate: new Date(<?php echo $min_date_array[0]; ?>, <?php echo $min_date_array[1]; ?> - 1, <?php echo $min_date_array[2]; ?>),
-            maxDate: new Date(<?php echo $max_date_array[0]; ?>, <?php echo $max_date_array[1]; ?> - 1, <?php echo $max_date_array[2]; ?>),
+            dateFormat: dateFormat,
+            minDate: minDate,
+            maxDate: maxDate,
             onSelect: function(dateText, inst) {
                /* When a 'start' date is selected, make this the min value for the end-date selector */
                 $("#graph_end_date").datepicker("option","minDate", $("#graph_start_date").datepicker("getDate"));
             }
         });
         $("#graph_end_date").datepicker({
-            dateFormat: 'yy-mm-dd',
+            dateFormat: dateFormat,
+            minDate: minDate,
+            maxDate: maxDate,
             onSelect: function(dateText, inst) {
                /* When a 'end' date is selected, make this the max value for the start-date selector */
                 $("#graph_start_date").datepicker("option","maxDate", $("#graph_end_date").datepicker("getDate"));
