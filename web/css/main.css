@@ -1,5 +1,10 @@
 body { padding: 0; margin: 0; border: 0; }
+
 #heading { width: 100%; background-image: url('../images/heading-bg.png'); }
+#heading-logo { width: 960px; margin-left: auto; margin-right: auto; }
+#heading-links { width: 960px; margin-left: auto; margin-right: auto; margin-top: -24px; }
+#sm-links { margin-left: 880px; }
+
 #navbar { height: 39px; background-image: url('../images/banner.png'); }
 #content { width: 960px; margin-left:auto; margin-right: auto; }
 #controlbar { width: 940px; text-align:right; margin-left:auto; margin-right: auto; padding-right: 20px; }

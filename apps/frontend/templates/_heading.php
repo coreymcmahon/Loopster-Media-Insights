@@ -1,7 +1,7 @@
 <div id="head">
     <div id="heading">
-        <?php echo image_tag("logo.png", array("id"=>"logo")) ?>
-        <?php include_partial("global/socialMediaLinks") ?>
+        <div id="heading-logo"><?php echo image_tag("logo.png", array("id"=>"logo")) ?></div>
+        <div id="heading-links"><?php include_partial("global/socialMediaLinks") ?></div>
     </div>
     <div id="navbar">
 
