@@ -1,3 +1,4 @@
+<?php use_javascript("highcharts") ?>
 <script type="text/javascript">
     $(document).ready(function () {
 
@@ -135,7 +136,39 @@
     </script>
 
     <script>
-        $(function() {
+        var chart1;
+
+
+        $(document).ready( function () {
+            chart1 = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'graph',
+                    type: 'line',
+                    zoomType: 'x'
+                },
+                title: {
+                    text: ''
+                },
+                xAxis: {
+                    type: 'datetime'
+                },
+                series: [
+                <?php foreach($fancount as $value): ?>
+                    {
+                        name: "<?php echo $value["name"]; ?>",
+                        data: [
+                        <?php foreach ($value["data"] as $point): ?>
+                            <?php $curr_date = explode("-", substr($point["date"],0,10)) ?>
+                            [ Date.UTC(<?php echo $curr_date[0] ."," . ($curr_date[1] - 1) . ",". $curr_date[2] ?>,0,0,0,0),<?php echo $point["fancount"]; ?> ],
+                        <?php endforeach; ?>
+                        ]
+                    },
+                <?php endforeach; ?>
+                ]
+            });
+        });
+        
+        /*$(function() {
         $.plot($("#graph"),
             data,
 
@@ -161,7 +194,7 @@
                     clickable: true
                 }
             }
-        );
+        );*/
         
         function formatDate(_date) {
             var date = new Date(parseInt(_date));
@@ -208,5 +241,4 @@
                 }
             //}
         });
-    });
     </script>
