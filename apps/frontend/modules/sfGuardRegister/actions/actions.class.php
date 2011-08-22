@@ -21,19 +21,42 @@ class sfGuardRegisterActions extends BasesfGuardRegisterActions
     }
 
     $this->form = new sfGuardRegisterForm();
+
+    /* Drop lastname and username from the form... Don't need these */
+    unset($this->form["last_name"]);
+    unset($this->form["username"]);
+
+    /* Add the form field for the newsletter sign-up */
     $this->form->setWidget("register", new sfWidgetFormInputCheckbox(array('default' => true , 'label' => 'Sign-up to newsletter?'), array('title' => 'Check this box to receive up-to-date Facebook marketing news and articles', 'value' => '1')));
     $this->form->setValidator("register", new sfValidatorString(array("required" => false), array()));
 
+    /* Make first name compulsory */
+    $this->form->setValidator("first_name",new sfValidatorString(array("required" => true)));
+
+    $this->form->setValidator("email_address", new sfValidatorEmail(array("required" => true), array("invalid" => "Please provide a valid email address.")));
+    
+    /* Set appropriate error messages */
+    $this->form->getValidator("first_name")->setMessage("required", "Please supply a first name.");
+    $this->form->getValidator("email_address")->setMessage("required", "Please provide a valid email address.");
+    $this->form->getValidator("password")->setMessage("required", "Please provide a password.");
+
+    /* If the form has been submitted, perform the actions to register new user */
     if ($request->isMethod('post'))
     {
       $this->form->bind($request->getParameter($this->form->getName()));
+
+      /* Overwrite lastname and username with the provided email address */
+      $email = $this->form->getValue("email_address");
+      sfContext::getInstance()->getLogger()->debug("Attempted sign-up of '" . $email . "'");
+      $this->form->updateObject(array("last_name" => $email, "username" => $email));
+
       if ($this->form->isValid())
       {
         $event = new sfEvent($this, 'user.filter_register');
         $this->form = $this->dispatcher
           ->filter($event, $this->form)
           ->getReturnValue();
-
+        
         $user = $this->form->save();
         $this->getUser()->signIn($user);
 
