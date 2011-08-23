@@ -60,7 +60,6 @@ class defaultActions extends sfActions
             $pages = FacebookPageTable::getTopFacebookPages($industryPages, $show);
           }
 
-          // TODO: generate JavaScript to put the data below into the graph
           $fandata = FanCountTable::getFancountData($pages, $this->form["start_date"]->getValue() . " 00:00:00", $this->form["end_date"]->getValue() . " 23:59:99");
           $fancount = array();
 
@@ -80,7 +79,6 @@ class defaultActions extends sfActions
           $this->fancount = $fancount;
           $this->graph_type = $this->form["graph_type"]->getValue();
           $this->fans = $this->form["fans"]->getValue();
-          /* } */
       }
   }
 }

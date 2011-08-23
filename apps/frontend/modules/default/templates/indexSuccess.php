@@ -89,7 +89,8 @@
             </div>
         </div>
         <div class="form-right">
-            <?php echo $form['graph_type']->renderRow() ?>
+            <?php /*echo $form['graph_type']->renderRow() */ /* Commented out because only allowing 1 graph type */ ?>
+            <?php echo $form['graph_type']->render() ?>
             <?php echo $form['fans']->renderRow() ?>
         </div>
     </div>
@@ -152,6 +153,14 @@
                 xAxis: {
                     type: 'datetime'
                 },
+                yAxis: {
+                    title: {
+                        text: 'Fans'
+                    }
+                },
+                credits: {
+                    enabled: false
+                },
                 series: [
                 <?php foreach($fancount as $value): ?>
                     {
@@ -166,79 +175,5 @@
                 <?php endforeach; ?>
                 ]
             });
-        });
-        
-        /*$(function() {
-        $.plot($("#graph"),
-            data,
-
-            {
-                series: {
-                    <?php if (!isset($graph_type) || ($graph_type == "line")): ?>
-                    lines: { show: true },
-                    points: { show: true },
-                    <?php else: ?>
-                    stack: 0, 
-                    bars: { show: true , fill: true, barWidth: 24 * 60 * 60 * 1000 * 0.5, align: 'left' }, 
-                    <?php endif; ?>
-                },
-                xaxis: {
-                    mode: "time",
-                    timeformat: "%y/%m/%d"
-                },
-                yaxis: {
-
-                },
-                grid: {
-                    hoverable: true,
-                    clickable: true
-                }
-            }
-        );*/
-        
-        function formatDate(_date) {
-            var date = new Date(parseInt(_date));
-            return ((date.getFullYear()) + "-" +
-                ((date.getMonth()+1) < 10 ? "0" + (date.getMonth()+1) : + (date.getMonth()+1) ) + "-" +
-                (date.getDate() < 10 ? "0" + date.getDate() : + date.getDate()));
-        }
-
-        function showTooltip(x, y, contents) {
-            $('<div id="tooltip">' + contents + '</div>').css( {
-                position: 'absolute',
-                display: 'none',
-                top: y + 5,
-                left: x + 5,
-                border: '1px solid #fdd',
-                padding: '2px',
-                'background-color': '#fee',
-                opacity: 0.80
-            }).appendTo("body").fadeIn(200);
-        }
-
-        var previousPoint = null;
-        $("#graph").bind("plothover", function (event, pos, item) {
-            //$("#x").text(pos.x.toFixed(2));
-            //$("#y").text(pos.y.toFixed(2));
-
-            /*if ($("#enableTooltip:checked").length > 0) {*/
-                if (item) {
-                    var m = (metric == "total");
-                    if (previousPoint != item.dataIndex) {
-                        previousPoint = item.dataIndex;
-
-                        $("#tooltip").remove();
-                        var x = item.datapoint[0].toFixed(2),
-                            y = item.datapoint[1].toFixed(2);
-
-                        showTooltip(item.pageX, item.pageY,
-                                    item.series.label + " had " + (m ? "" : "fan growth of ") + parseInt(y) + (m ? " fans on " : " on ") + formatDate(x));
-                    }
-                }
-                else {
-                    $("#tooltip").remove();
-                    previousPoint = null;
-                }
-            //}
         });
     </script>

@@ -18,7 +18,8 @@ class GraphForm extends BaseForm {
             "brands" => new sfWidgetFormDoctrineChoice( array("model"=>"FacebookPage","method"=>"getName","multiple"=>true)),
             "industry" => new sfWidgetFormDoctrineChoice( array("model"=>"Industry","method"=>"getName","multiple"=>false) ),
             "show" => new sfWidgetFormChoice(array("choices" => array("3" => "Top 3", "5" => "Top 5") ) , array()),
-            "graph_type" => new sfWidgetFormSelectRadio(array("choices" => array("line" => "Line" , "bar" => "Bar")), array()),
+            //"graph_type" => new sfWidgetFormSelectRadio(array("choices" => array("line" => "Line" , "bar" => "Bar")), array()), /* commented out as only displaying line graphs */
+            "graph_type" => new sfWidgetFormInputHidden( array( "default" => "line" ) ),
             "fans" => new sfWidgetFormSelectRadio(array("choices" => array("total" => "Total Fans" , "growth" => "Fan Growth")), array("title" => "Display which measurement on the graph" ))
             )
         );
