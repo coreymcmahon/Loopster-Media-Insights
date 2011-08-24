@@ -81,4 +81,13 @@ class defaultActions extends sfActions
           $this->fans = $this->form["fans"]->getValue();
       }
   }
+
+  public function executeInclusionRequest(sfWebRequest $request)
+  {
+      $inclusion_request = new InclusionRequest();
+      $inclusion_request->setUserId($this->getUser()->getGuardUser()->getId());
+      $inclusion_request->setFacebookUrl($request->getParameter("page_url"));
+      $this->renderText($inclusion_request->save());
+      return sfView::NONE;
+  }
 }

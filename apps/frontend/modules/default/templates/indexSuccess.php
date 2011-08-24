@@ -101,6 +101,39 @@
 </form>
 
 
+<script>
+    $(document).ready(
+        function () {
+            $("#inclusion_submit").bind("click",function() {
+                /* start displaying 'loading' gif */
+
+                if ($("#inclusion_page_url").attr("value") != "") {
+                    /* execute ajax callback */
+                    $.ajax("default/inclusionRequest?page_url=" + $("#inclusion_page_url").attr("value"),{
+                        success: function () {
+                            alert("Thanks! Your inclusion request has been received.");
+                        },
+                        error: function () {
+                            alert("An error occured while trying to process your inclusion request.\n\nPlease try again later.");
+                        }
+                    });
+                } else {
+                    alert("Please provide a Facebook Page URL");
+                }
+
+            });
+        }
+    );
+</script>
+<div>
+    <div>Want us to track your Facebook Page? Request inclusion below:</div>
+    <div><label>Facebook Page URL:</label> <input type="text" name="page_url" id="inclusion_page_url" /></div>
+    <input type="hidden" name="user_id" value="<?php echo $sf_user->getGuardUser()->getId() ?>" id="inclusion_user_id" />
+    <button id="inclusion_submit">Send</button>
+</div>
+
+
+
     <script type="text/javascript">
     /* Add the tooltips */
     $('#graph_start_date').tipsy({fallback:"Enter the start date for the data", gravity: "w" });

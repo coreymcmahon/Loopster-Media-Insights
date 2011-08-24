@@ -7,14 +7,14 @@
  * 
  * @property string $url
  * @property string $notes
- * @property integer $industry_id
+ * @property bigint $industry_id
  * @property Industry $Industry
  * @property Doctrine_Collection $FanCount
  * @property Doctrine_Collection $FacebookPages
  * 
  * @method string              getUrl()           Returns the current record's "url" value
  * @method string              getNotes()         Returns the current record's "notes" value
- * @method integer             getIndustryId()    Returns the current record's "industry_id" value
+ * @method bigint              getIndustryId()    Returns the current record's "industry_id" value
  * @method Industry            getIndustry()      Returns the current record's "Industry" value
  * @method Doctrine_Collection getFanCount()      Returns the current record's "FanCount" collection
  * @method Doctrine_Collection getFacebookPages() Returns the current record's "FacebookPages" collection
@@ -44,8 +44,8 @@ abstract class BaseFacebookPage extends sfDoctrineRecord
              'type' => 'string',
              'length' => 4000,
              ));
-        $this->hasColumn('industry_id', 'integer', null, array(
-             'type' => 'integer',
+        $this->hasColumn('industry_id', 'bigint', null, array(
+             'type' => 'bigint',
              'notnull' => false,
              ));
     }
@@ -55,8 +55,7 @@ abstract class BaseFacebookPage extends sfDoctrineRecord
         parent::setUp();
         $this->hasOne('Industry', array(
              'local' => 'industry_id',
-             'foreign' => 'id',
-             'onDelete' => 'NO ACTION'));
+             'foreign' => 'id'));
 
         $this->hasMany('FanCount', array(
              'local' => 'id',

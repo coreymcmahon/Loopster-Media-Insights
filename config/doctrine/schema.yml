@@ -3,10 +3,9 @@ FacebookPage:
   columns:
     url: { type: string(511), notnull: true }
     notes: { type: string(4000) }
-    industry_id: { type: integer , notnull: false }
+    industry_id: { type: int , notnull: false }
   relations:
     Industry:
-      onDelete: NO ACTION
       local: industry_id
       foreign: id
 
@@ -49,3 +48,14 @@ Tokens:
   actAs: { Timestampable: ~ }
   columns:
     token: { type: string(127), notnull: true }
+
+InclusionRequest:
+  actAs: { Timestampable: ~ }
+  columns:
+    user_id: { type: integer, notnull: true }
+    facebook_url: { type: string(1000), notnull: true }
+  relations:
+    User:
+      local: user_id
+      foreign: id
+      class: sfGuardUser
