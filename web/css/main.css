@@ -9,20 +9,27 @@ body { padding: 0; margin: 0; border: 0; }
 #content { width: 960px; margin-left:auto; margin-right: auto; }
 #controlbar { width: 940px; text-align:right; margin-left:auto; margin-right: auto; padding-right: 20px; }
 
-#form-main { position: relative; }
+#form-main { position: absolute; margin-bottom: 400px; }
 #form-main ul { margin-left: 0; -webkit-padding-start: 0; }
 #form-main ul, #form-main ul li { list-style: none !important; }
 #form-main .radio.view_by li { display: inline; }
 #form-main .form-left, #form-main .form-right { width: 200px; min-height: 200px; }
 #form-main .form-right { position: absolute; top: 0; margin-left: 200px; margin-top: 40px; }
+#graph_brands { height: 100px; }
 
 #form-main .radio.view_by li { text-decoration: none; color: grey; }
 .selected { text-decoration: underline; color: black; }
 
+#form-dates { width: 220px; margin-left: 660px; position: absolute; }
+
 #adminbar { width: 960px; margin-left:auto; margin-right: auto; margin-bottom:25px;}
 .error { color: red; font-weight: bold; }
 
-#graph-container {}
+#graph-container { position:absolute; margin-top: 220px; }
 #graph-image { display: block; position: absolute; margin-left: 105px; margin-top: 10px; }
 #graph-image img { display:block; opacity: 0.5; width: 180px; height: 59px; }
 #graph-image img:hover { opacity: 1; }
+
+#inclusion-form { margin-top: 740px; position: absolute; text-align: right; margin-left: 450px; padding-bottom: 50px; }
+
+.radio_list li label { cursor: pointer; }

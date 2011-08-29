@@ -138,4 +138,8 @@ class populateActions extends sfActions
       // Success!
       return sfView::SUCCESS;
   }
+
+  public function executeLoad(sfWebRequest $request) {
+    /* Used for adding extra Facebook Pages */
+  }
 }

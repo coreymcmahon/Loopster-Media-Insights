@@ -29,51 +29,10 @@
 <form action="<?php echo url_for('default/index') ?>" method="POST">
   
     <div id="form-dates">
-        <?php echo $form['start_date']->renderRow() ?>
-        <?php echo $form['end_date']->renderRow() ?>
+        <table><?php echo $form['start_date']->renderRow() ?><br/>
+        <?php echo $form['end_date']->renderRow() ?></table>
     </div>
-  
-    <div id="graph-container">
-        <div id="graph-image"><img src="<?php echo url_for("images/loopster-logo.png"); ?>"/></div>
-        <div id="graph" style="width: 875px; height: 500px; margin-left: auto; margin-right: auto;">&nbsp;</div>
-    </div>
-    <script type="text/javascript">
-    var data = [
-    <?php foreach($fancount as $value): ?>
-        {
-            label: "<?php echo $value["name"]; ?>",
-            data: [
-            <?php foreach ($value["data"] as $point): ?>
-                [ <?php echo strtotime($point["date"] . " UTC") * 1000; ?> , <?php echo $point["fancount"]; ?> ],
-            <?php endforeach; ?>
-            ],
-            hoverable: true,
-            clickable: true
-        },
-    <?php endforeach; ?>
-    ];
 
-    function convertToGrowth(_data) {
-        var ret = [];
-        for (var i=0 ; i<_data.length ; i++) {
-            ret[i] = { label: _data[i].label, data: [] };
-
-            for (var x=0 ; x<_data[i]["data"].length ; x++) {
-                if (x > 0) {
-                    ret[i]["data"][x-1] = [ _data[i]["data"][x][0] , _data[i]["data"][x][1] - _data[i]["data"][x-1][1] ];
-                }
-            }
-        }
-        return ret;
-    }
-    var metric = "total";
-
-    <?php if ($fans == "growth"): ?>
-    data = convertToGrowth(data);
-    metric = "growth";
-    <?php endif; ?>
-    </script>
-    
     <div id="form-main">
         <div class="form-left">
             <div class="radio view_by">
@@ -87,6 +46,9 @@
             <div class="radio pages">
                 <?php echo $form['brands']->renderRow() ?>
             </div>
+            <div>
+                <input type="submit" id="form_submit" value="Update" />
+            </div>
         </div>
         <div class="form-right">
             <?php /*echo $form['graph_type']->renderRow() */ /* Commented out because only allowing 1 graph type */ ?>
@@ -97,7 +59,12 @@
     <?php if ($form->isCSRFProtected()) : ?>
       <?php echo $form['_csrf_token']->render(); ?>
     <?php endif; ?>
-    <input type="submit" id="form_submit" value="Update" />
+
+  
+    <div id="graph-container">
+        <div id="graph-image"><img src="<?php echo url_for("images/loopster-logo.png"); ?>"/></div>
+        <div id="graph" style="width: 875px; height: 500px; margin-left: auto; margin-right: auto;">&nbsp;</div>
+    </div>
 </form>
 
 
@@ -105,13 +72,12 @@
     $(document).ready(
         function () {
             $("#inclusion_submit").bind("click",function() {
-                /* start displaying 'loading' gif */
-
                 if ($("#inclusion_page_url").attr("value") != "") {
                     /* execute ajax callback */
                     $.ajax("default/inclusionRequest?page_url=" + $("#inclusion_page_url").attr("value"),{
                         success: function () {
                             alert("Thanks! Your inclusion request has been received.");
+                            $("#inclusion_page_url").attr("value","");
                         },
                         error: function () {
                             alert("An error occured while trying to process your inclusion request.\n\nPlease try again later.");
@@ -120,12 +86,11 @@
                 } else {
                     alert("Please provide a Facebook Page URL");
                 }
-
             });
         }
     );
 </script>
-<div>
+<div id="inclusion-form">
     <div>Want us to track your Facebook Page? Request inclusion below:</div>
     <div><label>Facebook Page URL:</label> <input type="text" name="page_url" id="inclusion_page_url" /></div>
     <input type="hidden" name="user_id" value="<?php echo $sf_user->getGuardUser()->getId() ?>" id="inclusion_user_id" />
@@ -172,6 +137,39 @@
     <script>
         var chart1;
 
+        var data = [
+            <?php foreach($fancount as $value): ?>
+            {
+                name: "<?php echo $value["name"]; ?>",
+                data: [
+                <?php foreach ($value["data"] as $point): ?>
+                    <?php $curr_date = explode("-", substr($point["date"],0,10)) ?>
+                    [ Date.UTC(<?php echo $curr_date[0] ."," . ($curr_date[1] - 1) . ",". $curr_date[2] ?>,0,0,0,0),<?php echo $point["fancount"]; ?> ],
+                <?php endforeach; ?>
+                ]
+            },
+            <?php endforeach; ?>
+        ];
+
+        function convertToGrowth(_data) {
+            var ret = [];
+            for (var i=0 ; i<_data.length ; i++) {
+                ret[i] = { name: _data[i].name, data: [] };
+
+                for (var x=0 ; x<_data[i]["data"].length ; x++) {
+                    if (x > 0) {
+                        ret[i]["data"][x-1] = [ _data[i]["data"][x][0] , _data[i]["data"][x][1] - _data[i]["data"][x-1][1] ];
+                    }
+                }
+            }
+            return ret;
+        }
+        var metric = "total";
+
+        <?php if ($fans == "growth"): ?>
+        data = convertToGrowth(data);
+        metric = "growth";
+        <?php endif; ?>
 
         $(document).ready( function () {
             chart1 = new Highcharts.Chart({
@@ -188,25 +186,13 @@
                 },
                 yAxis: {
                     title: {
-                        text: 'Fans'
+                        text: (metric == 'growth' ? 'Fan growth' : 'Fans')
                     }
                 },
                 credits: {
                     enabled: false
                 },
-                series: [
-                <?php foreach($fancount as $value): ?>
-                    {
-                        name: "<?php echo $value["name"]; ?>",
-                        data: [
-                        <?php foreach ($value["data"] as $point): ?>
-                            <?php $curr_date = explode("-", substr($point["date"],0,10)) ?>
-                            [ Date.UTC(<?php echo $curr_date[0] ."," . ($curr_date[1] - 1) . ",". $curr_date[2] ?>,0,0,0,0),<?php echo $point["fancount"]; ?> ],
-                        <?php endforeach; ?>
-                        ]
-                    },
-                <?php endforeach; ?>
-                ]
+                series: data
             });
         });
     </script>
