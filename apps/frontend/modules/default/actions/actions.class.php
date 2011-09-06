@@ -44,25 +44,27 @@ class defaultActions extends sfActions
 
           /* if ($this->form->isValid()) { // TODO: add validation in here */
 
-          // Move bits and bytes around...
+          // Pull back the Facebook Pages we're going to show the fancount data for
           if ( $this->form["view_by"]->getValue() == "pages" ) {
-            // Show fan stats for specific pages...
+            // If user wants to see fancount data for specific pages...
             $page_ids = $this->form["brands"]->getValue();
             $pages = FacebookPageTable::getInstance()->createQuery()
                     ->select("*")
                     ->whereIn("id",$page_ids)
                     ->execute();
           } else {
-            // Show fan stats for the 'top X' in specified industry
+            // If user wants to see the fancount data for the top pages in a specific category...
             $industry_id = $this->form["industry"]->getValue();
-            $show = $this->form["show"]->getValue();
+            $show = $this->form["show"]->getValue(); // The number of top pages to show (ie: top 3, top 5, top 10...)
             $industryPages = FacebookPageTable::getFacebookPagesByIndustry($industry_id);
             $pages = FacebookPageTable::getTopFacebookPages($industryPages, $show);
           }
 
+          // Pull back the fancount data from DB
           $fandata = FanCountTable::getFancountData($pages, $this->form["start_date"]->getValue() . " 00:00:00", $this->form["end_date"]->getValue() . " 23:59:99");
           $fancount = array();
 
+          // Format the fancount data so that it can be rendered in JavaScript
           foreach ($fandata as $point) {
               $page = $point->getFacebookPage();
               $id = $page->getId();
@@ -76,12 +78,18 @@ class defaultActions extends sfActions
               $fancount["" . $id]["data"][] = array("date" => $date , "fancount" => $count);
           }
 
+          // Set-up the objects that will be visit by the view-layer code
           $this->fancount = $fancount;
           $this->graph_type = $this->form["graph_type"]->getValue();
           $this->fans = $this->form["fans"]->getValue();
       }
   }
 
+ /**
+  *
+  *
+  * @param sfRequest $request A request object
+  */
   public function executeInclusionRequest(sfWebRequest $request)
   {
       $inclusion_request = new InclusionRequest();

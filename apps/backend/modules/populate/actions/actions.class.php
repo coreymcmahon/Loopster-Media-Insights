@@ -41,6 +41,7 @@ class populateActions extends sfActions
       /* Some value was provided for 'num' */
         $pages = FanCountTable::getDirtyPages($num);
 
+      date_default_timezone_set("Australia/Sydney"); // All datetime values are set to Sydney time
       $now = date("Y-m-d") . " 12:00:00";
       
       foreach($pages as $page) {

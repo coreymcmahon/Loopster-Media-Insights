@@ -24,6 +24,7 @@ class FanCountTable extends Doctrine_Table
      */
     public static function getDirtyPages($limit=0)
     {
+        date_default_timezone_set("Australia/Sydney"); // All datetime values are set to Sydney time
         $start = date("Y-m-d") . " 00:00:00";
         $end   = date("Y-m-d") . " 23:59:99";
 
