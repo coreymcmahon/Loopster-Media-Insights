@@ -1,138 +1,15 @@
-Can add pages to the database using the following in the populate#load action :
+This is a tool for tracking the fangrowth of Facebook Pages across time.
 
+It uses PHP and the Symfony framework. jQuery is used for some of the UI effects.
 
+You should be able to see it live here:
+  http://insights.coreymcmahon.com
+  (note: test version on shared hosting, performance may be less than ideal)
 
-$TECHNOLOGY = 1; $TRAVEL = 2; $ENTERTAINMENT = 3; $SPORTS = 4; $RETAIL = 5; $FOOD = 6; $FASHION = 7;
-    $LIQUOR = 8; $ELECTRONICS = 9; $HEALTH = 10; $NPO = 11; $AUTOMOTIVE = 12; $FINANCE = 13; $PUBLISHING = 14; $HOME = 15;
-    $B2B = 16;
+The application uses the Facebook API and an access token (provided by the user) to pull the 'Like' count of the different pages set up in the database. Because an access token is used to make the call, the application can retrieve the 'Like' count of Pages with age restrictions (ie: alcohol brands).
 
+The update needs to be triggered daily. This can either be done using the 'backend' interface (requires admin access) or can be automatically initiated from the command line via a CRON job.
 
-    $add = array(
-        array( "url" => "http://www.facebook.com/ClearlyContacts.com.au", "industry" => $FOOD ),
-array( "url" => "http://www.facebook.com/SunnyTheEgg", "industry" => $FOOD ),
-array( "url" => "http://www.facebook.com/toyota.aus", "industry" => $AUTOMOTIVE ),
-array( "url" => "http://www.facebook.com/BiozetAttack", "industry" => $HOME ),
-array( "url" => "http://www.facebook.com/PlayStationAU", "industry" => $ENTERTAINMENT ),
-array( "url" => "http://www.facebook.com/topgearaus", "industry" => $ENTERTAINMENT ),
-array( "url" => "http://www.facebook.com/brumbys", "industry" => $FOOD ),
-array( "url" => "http://www.facebook.com/emuaustralia", "industry" => $FASHION ),
-array( "url" => "http://www.facebook.com/Schwarzkopf.Australia", "industry" => $HEALTH ),
-array( "url" => "http://www.facebook.com/kitkatau", "industry" => $FOOD ),
-array( "url" => "http://www.facebook.com/lindtaus", "industry" => $FOOD ),
-array( "url" => "http://www.facebook.com/PanasonicAustralia", "industry" => $ELECTRONICS ),
-array( "url" => "http://www.facebook.com/Telstra", "industry" => $TECHNOLOGY ),
-array( "url" => "http://www.facebook.com/quiksilverAus", "industry" => $FASHION ),
-array( "url" => "http://www.facebook.com/PenguinBooksAustralia", "industry" => $PUBLISHING ),
-array( "url" => "http://www.facebook.com/ContinentalCupaSoup", "industry" => $FOOD ),
-array( "url" => "http://www.facebook.com/windowsau", "industry" => $TECHNOLOGY ),
-array( "url" => "http://www.facebook.com/foxheadaustralia", "industry" => $FASHION ),
-array( "url" => "http://www.facebook.com/nikesportswearau", "industry" => $FASHION ),
-array( "url" => "http://www.facebook.com/venergyaustralia", "industry" => $FOOD ),
-array( "url" => "http://www.facebook.com/HuggiesAU", "industry" => $HOME ),
-array( "url" => "http://www.facebook.com/ArtGalleryofNSW", "industry" => $NPO ),
-array( "url" => "http://www.facebook.com/fantasticnoodles", "industry" => $FOOD ),
-array( "url" => "http://www.facebook.com/turkishdelight", "industry" => $FOOD ),
-array( "url" => "http://www.facebook.com/VibeHotels", "industry" => $TRAVEL ),
-array( "url" => "http://www.facebook.com/sonyericssonau", "industry" => $ELECTRONICS ),
-array( "url" => "http://www.facebook.com/BurtonAustralia", "industry" => $SPORTS ),
-array( "url" => "http://www.facebook.com/HPaustralia", "industry" => $ELECTRONICS ),
-array( "url" => "http://www.facebook.com/BeltalAU", "industry" => $B2B ),
-array( "url" => "http://www.facebook.com/DoritosANZ", "industry" => $FOOD ),
-array( "url" => "http://www.facebook.com/BingLeeElectrics", "industry" => $ELECTRONICS ),
-array( "url" => "http://www.facebook.com/rockstaraustralia", "industry" => $FOOD ),
-array( "url" => "http://www.facebook.com/FordOz", "industry" => $AUTOMOTIVE ),
-array( "url" => "http://www.facebook.com/justcar", "industry" => $FINANCE ),
-array( "url" => "http://www.facebook.com/MumSpace", "industry" => $HOME ),
-array( "url" => "http://www.facebook.com/StayzAU", "industry" => $TRAVEL ),
-array( "url" => "http://www.facebook.com/SamsungCapture", "industry" => $ELECTRONICS ),
-array( "url" => "http://www.facebook.com/cadburyboost", "industry" => $FOOD ),
-array( "url" => "http://www.facebook.com/LOrealProAus", "industry" => $HEALTH ),
-array( "url" => "http://www.facebook.com/cathaypacificAU", "industry" => $TRAVEL ),
-array( "url" => "http://www.facebook.com/KrispyAustralia", "industry" => $FOOD ),
-array( "url" => "http://www.facebook.com/3Mobile", "industry" => $ELECTRONICS ),
-array( "url" => "http://www.facebook.com/KerastaseAustralia", "industry" => $HEALTH ),
-array( "url" => "http://www.facebook.com/mountaindewau", "industry" => $FOOD ),
-array( "url" => "http://www.facebook.com/BMWAustralia", "industry" => $AUTOMOTIVE ),
-array( "url" => "http://www.facebook.com/cadburycherryripe", "industry" => $FOOD ),
-array( "url" => "http://www.facebook.com/RedkenAustralia", "industry" => $HEALTH ),
-array( "url" => "http://www.facebook.com/FordAustralia", "industry" => $AUTOMOTIVE ),
-array( "url" => "http://www.facebook.com/fordfiestaaustralia", "industry" => $AUTOMOTIVE ),
-array( "url" => "http://www.facebook.com/MojoAustralia", "industry" => $TRAVEL ),
-array( "url" => "http://www.facebook.com/TheBodyShopAustralia", "industry" => $HEALTH ),
-array( "url" => "http://www.facebook.com/dragginjeansaustralia", "industry" => $FASHION ),
-array( "url" => "http://www.facebook.com/mini.australia", "industry" => $AUTOMOTIVE ),
-array( "url" => "http://www.facebook.com/garnieraustralia", "industry" => $HEALTH ),
-array( "url" => "http://www.facebook.com/crocsaus", "industry" => $FASHION ),
-array( "url" => "http://www.facebook.com/LancomeAus", "industry" => $HEALTH ),
-array( "url" => "http://www.facebook.com/RSVP.com.au", "industry" => $ENTERTAINMENT ),
-array( "url" => "http://www.facebook.com/CollectiveBarossa", "industry" => $LIQUOR ),
-array( "url" => "http://www.facebook.com/Brightlabs", "industry" => $TECHNOLOGY ),
-array( "url" => "http://www.facebook.com/CentricConsulting", "industry" => $TECHNOLOGY ),
-array( "url" => "http://www.facebook.com/ABCAustralia", "industry" => $ENTERTAINMENT ),
-array( "url" => "http://www.facebook.com/amaysim", "industry" => $TECHNOLOGY ),
-array( "url" => "http://www.facebook.com/AppliancesOnline.com.au", "industry" => $RETAIL ),
-array( "url" => "http://www.facebook.com/AUSTAR", "industry" => $ENTERTAINMENT ),
-array( "url" => "http://www.facebook.com/ausgeo", "industry" => $PUBLISHING ),
-array( "url" => "http://www.facebook.com/gourmettraveller", "industry" => $PUBLISHING ),
-array( "url" => "http://www.facebook.com/australianhouseandgarden", "industry" => $PUBLISHING ),
-array( "url" => "http://www.facebook.com/theweekly", "industry" => $PUBLISHING ),
-array( "url" => "http://www.facebook.com/bupainternational", "industry" => $FINANCE ),
-array( "url" => "http://www.facebook.com/CarAdvice", "industry" => $AUTOMOTIVE ),
-array( "url" => "http://www.facebook.com/CarnivalOz", "industry" => $TRAVEL ),
-array( "url" => "http://www.facebook.com/cityofsydneycouncil", "industry" => $NPO ),
-array( "url" => "http://www.facebook.com/cosmoaustralia", "industry" => $PUBLISHING ),
-array( "url" => "http://www.facebook.com/cue", "industry" => $FASHION ),
-array( "url" => "http://www.facebook.com/davidjonesstore", "industry" => $RETAIL ),
-array( "url" => "http://www.facebook.com/DealsDirect.com.au", "industry" => $RETAIL ),
-array( "url" => "http://www.facebook.com/dmgradio", "industry" => $ENTERTAINMENT ),
-array( "url" => "http://www.facebook.com/dollymag", "industry" => $PUBLISHING ),
-array( "url" => "http://www.facebook.com/eharmonyaustralia", "industry" => $ENTERTAINMENT ),
-array( "url" => "http://www.facebook.com/Essendon", "industry" => $SPORTS ),
-array( "url" => "http://www.facebook.com/fhmaustralia", "industry" => $PUBLISHING ),
-array( "url" => "http://www.facebook.com/flightcentreAU", "industry" => $TRAVEL ),
-array( "url" => "http://www.facebook.com/GraziaAustralia", "industry" => $PUBLISHING ),
-array( "url" => "http://www.facebook.com/HarpersBAZAARAustralia", "industry" => $PUBLISHING ),
-array( "url" => "http://www.facebook.com/HarveyNormanAU", "industry" => $ELECTRONICS ),
-array( "url" => "http://www.facebook.com/hawthornfc", "industry" => $SPORTS ),
-array( "url" => "http://www.facebook.com/HotelsCombined", "industry" => $TRAVEL ),
-array( "url" => "http://www.facebook.com/JetstarAustralia", "industry" => $TRAVEL ),
-array( "url" => "http://www.facebook.com/KidspotAustralia", "industry" => $HOME ),
-array( "url" => "http://www.facebook.com/madisonmagau", "industry" => $PUBLISHING ),
-array( "url" => "http://www.facebook.com/mbmag", "industry" => $PUBLISHING ),
-array( "url" => "http://www.facebook.com/ninemsn", "industry" => $TECHNOLOGY ),
-array( "url" => "http://www.facebook.com/myNRMA", "industry" => $FINANCE ),
-array( "url" => "http://www.facebook.com/NWmagazine", "industry" => $PUBLISHING ),
-array( "url" => "http://www.facebook.com/oo.com.au", "industry" => $RETAIL ),
-array( "url" => "http://www.facebook.com/penrithpanthers", "industry" => $SPORTS ),
-array( "url" => "http://www.facebook.com/quickbedscom", "industry" => $TRAVEL ),
-array( "url" => "http://www.facebook.com/reallivingmagazine", "industry" => $PUBLISHING ),
-array( "url" => "http://www.facebook.com/sbsnow", "industry" => $ENTERTAINMENT ),
-array( "url" => "http://www.facebook.com/shangrilasydney", "industry" => $TRAVEL ),
-array( "url" => "http://www.facebook.com/shoptilyoudropmag", "industry" => $PUBLISHING ),
-array( "url" => "http://www.facebook.com/SonyMusicAU", "industry" => $ENTERTAINMENT ),
-array( "url" => "http://www.facebook.com/sportal.australia", "industry" => $PUBLISHING ),
-array( "url" => "http://www.facebook.com/sportsgeek", "industry" => $SPORTS ),
-array( "url" => "http://www.facebook.com/surfpacific", "industry" => $TECHNOLOGY ),
-array( "url" => "http://www.facebook.com/sydneyoperahouse", "industry" => $ENTERTAINMENT ),
-array( "url" => "http://www.facebook.com/thewiggles", "industry" => $ENTERTAINMENT ),
-array( "url" => "http://www.facebook.com/ToshibaANZ", "industry" => $ELECTRONICS ),
-array( "url" => "http://www.facebook.com/tourismvic", "industry" => $TRAVEL ),
-array( "url" => "http://www.facebook.com/TrivettClassic", "industry" => $AUTOMOTIVE ),
-array( "url" => "http://www.facebook.com/ubank", "industry" => $FINANCE ),
-array( "url" => "http://www.facebook.com/VirginMobileAus", "industry" => $TECHNOLOGY ),
-array( "url" => "http://www.facebook.com/VodafoneAU", "industry" => $TECHNOLOGY ),
-array( "url" => "http://www.facebook.com/Wego.travel", "industry" => $TRAVEL ),
-array( "url" => "http://www.facebook.com/Western.Bulldogs", "industry" => $SPORTS ),
-array( "url" => "http://www.facebook.com/Westfield", "industry" => $RETAIL ),
-array( "url" => "http://www.facebook.com/wotif", "industry" => $TRAVEL )
-    );
+Happy playing!
 
-    $this->fin = "";
-    foreach ($add as $val) {
-        $fb = new FacebookPage();
-        $fb->setUrl($val["url"]);
-        $fb->setIndustryId($val["industry"]);
-        $fb->save();
-    }
-
-    $this->setTemplate("fix");
+Suggestions and questions can be directed to contact@coreymcmahon.com
