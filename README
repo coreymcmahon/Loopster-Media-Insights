@@ -1,6 +1,6 @@
 This is a tool for tracking the fangrowth of Facebook Pages across time.
 
-It uses PHP and the Symfony framework. jQuery is used for some of the UI effects.
+It uses PHP and the Symfony framework. jQuery is used for some of the UI effects. The app is also integrated with MailChimp so that new registrations can be 'opted-in' to existing MailChimp databases.
 
 You should be able to see it live here:
   http://insights.coreymcmahon.com
