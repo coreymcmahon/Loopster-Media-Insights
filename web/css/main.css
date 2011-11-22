@@ -1,4 +1,4 @@
-body { padding: 0; margin: 0; border: 0; }
+body { padding: 0; margin: 0; border: 0; font-family: Calibri; }
 
 #heading { width: 100%; background-image: url('../images/heading-bg.png'); }
 #heading-logo { width: 960px; margin-left: auto; margin-right: auto; }
@@ -7,29 +7,76 @@ body { padding: 0; margin: 0; border: 0; }
 
 #navbar { height: 39px; background-image: url('../images/banner.png'); }
 #content { width: 960px; margin-left:auto; margin-right: auto; }
-#controlbar { width: 940px; text-align:right; margin-left:auto; margin-right: auto; padding-right: 20px; }
+#controlbar { width: 940px; text-align:right; margin-left:auto; margin-right: auto; padding-right: 20px; margin-bottom: 10px; }
+#controlbar a { color: #52545e; text-decoration: none; }
+#controlbar a:hover { text-decoration: underline; }
 
-#form-main { position: absolute; margin-bottom: 400px; }
-#form-main ul { margin-left: 0; -webkit-padding-start: 0; }
-#form-main ul, #form-main ul li { list-style: none !important; }
-#form-main .radio.view_by li { display: inline; }
-#form-main .form-left, #form-main .form-right { width: 200px; min-height: 200px; }
-#form-main .form-right { position: absolute; top: 0; margin-left: 200px; margin-top: 40px; }
-#graph_brands { height: 100px; }
-
-#form-main .radio.view_by li { text-decoration: none; color: grey; }
 .selected { text-decoration: underline; color: black; }
-
-#form-dates { width: 220px; margin-left: 660px; position: absolute; }
 
 #adminbar { width: 960px; margin-left:auto; margin-right: auto; margin-bottom:25px;}
 .error { color: red; font-weight: bold; }
 
-#graph-container { position:absolute; margin-top: 220px; }
-#graph-image { display: block; position: absolute; margin-left: 105px; margin-top: 10px; }
-#graph-image img { display:block; opacity: 0.5; width: 180px; height: 59px; }
-#graph-image img:hover { opacity: 1; }
+#graph-container {width: 958px; height: 500px; margin-top: 10px; }
+#graph { width: 875px; height: 500px; margin-left: auto; margin-right: auto; }
+#highcharts-0 {  border: 1px solid lightgray; }
 
-#inclusion-form { margin-top: 740px; position: absolute; text-align: right; margin-left: 450px; padding-bottom: 50px; }
+/*#inclusion-form { margin-top: 740px; position: absolute; text-align: right; margin-left: 450px; padding-bottom: 50px; }*/
 
 .radio_list li label { cursor: pointer; }
+
+/* Main form */
+.button.view_by { height: 64px; margin-left: 20px; }
+.button.view_by a { display: block; width: 202px; height: 38px; border: 1px solid #868585; color: #868585; text-decoration: none; text-align: center; height: 29px; padding-top: 10px; position: absolute; margin-top: 16px; }
+.button.view_by a.selected { border-color: #52545e; background-color: #52545e; color: #fff; }
+.button.view_by a.pages { margin-left: 220px; }
+
+.main-form { border: 1px solid #e9e9e9; margin-bottom: 40px; }
+.fields { height: 150px; font-size: 14px; }
+.main-form .fields > div { position:absolute; }
+#form-left { margin-left: 20px; }
+#form-center { margin-left: 333px; }
+#form-center > div > div { padding-top: 15px; padding-left: 20px; }
+#form-center ul { padding-left: 100px; padding-top: 15px; }
+#form-center > div > label { display: none; }
+#form-right { margin-left: 645px; }
+#form-right table { margin-left: 46px; margin-top: 10px; }
+.main-form .fields > div > div { width: 300px; height: 122px; background-color: #e5e5e5; }
+
+ul.radio_list { margin: 0; padding: 0; list-style: none; }
+
+.update input { width: 102px; height: 34px; display: block; text-indent: -9999px; background-image:url(../images/update-button.png); border: none; cursor: pointer; margin-left: 20px; margin-top: -12px; }
+
+.radio.industry { padding-top: 30px; padding-left: 30px; }
+.radio.pages label { display: none; }
+.radio.pages select { height: 100px; margin-top: 10px; margin-left: 10px; width: 200px; }
+
+/* Login page */
+.login-form { border: 1px solid #52545e; padding: 2px; margin-top: 20px; margin-bottom: 20px; }
+.login-form h1 { background-color: #52545e; color: #fff; font-size: 30px; padding-left: 17px; padding-top: 10px; height: 47px; width: 937px; margin-top: 0; }
+.login-form .top { background-color: #cacaca; color: #393333; height: 380px; }
+.login-form ul { padding:0; padding-left: 22px; margin-top: 30px; }
+.login-form ul li { list-style: none; display: block; background-repeat: no-repeat; padding: 8px; padding-left: 52px; font-size: 24px; }
+.login-form ul li.industry { background-image: url(../images/icon-fb.png); }
+.login-form ul li.australia { background-image: url(../images/icon-paper.png); }
+.login-form ul li.updated { background-image: url(../images/icon-screen.png); }
+.login-form ul li.print { background-image: url(../images/icon-printer.png); }
+.login-form .image { position: absolute; margin-top: -198px; margin-left: 500px; }
+.login-form .links a { position: absolute; }
+.login-form a.signup { color: #e03818; font-size: 24px; text-decoration: none; display: block; margin-left: 50px; margin-top: 27px; }
+.login-form a.clickhere { display: block; text-indent: -9999px; background-image:url(../images/click-here.png); width: 102px; height: 33px; opacity: .7; margin-left: 238px; margin-top: 27px; }
+.login-form a.clickhere:hover { opacity: 1; }
+
+.login-form .bottom { padding-left: 50px; }
+.login-form .bottom h2 { color: #0251af; }
+.login-form .bottom label { display: block; color: #3c5281; font-size: 16px; font-weight: normal; }
+.login-form .bottom input { display: block; }
+.login-form .bottom .submitbutton { background-image: url(../images/log-in.png); width: 102px; height: 34px; display: block; border: none; text-indent: -9999px; margin-left: 160px; margin-bottom: 10px; }
+
+.login-form form a { color: #0251af; text-decoration: none; font-size: 12px; }
+
+/* Inclusion form */
+#inclusion-form { margin-left: 20px; margin-top: 40px; margin-bottom: 20px; }
+#inclusion-form .heading { color: #0251af; font-size: 18px; }
+#inclusion-form .subheading { color: #3c5281; font-size: 16px; margin-top: 4px; }
+#inclusion-form .input { color: #3c5281; font-size: 16px; margin-top: 12px; }
+#inclusion_submit { width: 102px; height: 34px; background-image:url(../images/submit-button.png); text-indent: -9999px; display: block; border: none; cursor: pointer; margin-left: 290px; margin-top: -28px; }

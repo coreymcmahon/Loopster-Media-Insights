@@ -47,14 +47,21 @@ class populateActions extends sfActions
       foreach($pages as $page) {
           
           $count = OpenGraph::getOGObject($page->getName(), $access_token);
-          $fancount = new FanCount();
-          $fancount->setFacebookPage($page);
-          
-          $fancount->setFancount($count->likes);
-          
-          $fancount->setDate($now);
-          $fancount->save();
-          
+
+          if (isset($count->likes)) {
+              $fancount = new FanCount();
+              $fancount->setFacebookPage($page);
+
+              $fancount->setFancount($count->likes);
+
+              $fancount->setDate($now);
+              $fancount->save();
+          } else {
+              $error = "Failed to get FanCount for page '" . $page->getName() . "' (" . $page->getId() . ")";
+              $user = $this->getUser();
+              sfContext::getInstance()->getLogger()->log($now . " - " . $error, sfLogger::CRIT);
+              $user->setFlash("error", $user->getFlash("error") . $error . ", ");
+          }
       }
 
 
@@ -142,5 +149,50 @@ class populateActions extends sfActions
 
   public function executeLoad(sfWebRequest $request) {
     /* Used for adding extra Facebook Pages */
+  }
+
+  public function executeHack(sfWebRequest $request) {
+      $pages = FacebookPageTable::getInstance()->findAll();
+      $this->before = array(); // Let the view layer see these in case we want to display
+      $this->after = array();
+      $this->mid = array();
+
+      // For each page, go through and grab the fancount value for the day before and the day after...
+      foreach ($pages as $page) {
+          $id = $page->getId(); // Local copy of the ID field for this page
+
+          // Grab the 'before' date, stick it in the array with Page ID as the key
+          $before = FanCountTable::getInstance()->createQuery()
+                  ->select()
+                  ->where("date = ?", ("2011-09-02 12:00:00"))
+                  ->andWhere("facebook_page_id = ?", $id)
+                  ->execute();
+          $this->before["$id"] = $before[0]->getFancount();
+
+          // Grab the 'after' date, stick it in the array with Page ID as the key
+          $after = FanCountTable::getInstance()->createQuery()
+                  ->select()
+                  ->where("date = ?", ("2011-09-05 12:00:00"))
+                  ->andWhere("facebook_page_id = ?", $id)
+                  ->execute();
+          $this->after["$id"] = $after[0]->getFancount();
+      }
+
+      foreach ($this->before as $key=>$value) {
+          /*$diff = $this->after[$key] - $this->before[$key];
+          $diff = $diff / 3;
+
+          $day1 = new FanCount();
+          $day1->setFacebookPageId($key);
+          $day1->setDate("2011-09-03 12:00:00");
+          $day1->setFancount($this->before[$key] + $diff);
+          $day1->save();
+
+          $day2 = new FanCount();
+          $day2->setFacebookPageId($key);
+          $day2->setDate("2011-09-04 12:00:00");
+          $day2->setFancount($this->before[$key] + $diff + $diff);
+          $day2->save();*/
+      }
   }
 }
